@@ -23,7 +23,7 @@ enum RecordType: string
 
     public function isNormal(): bool
     {
-        return in_array($this, [self::A, self::AAAA, self::CNAME, self::MX, self::TXT, self::NS]);
+        return \in_array($this, [self::A, self::AAAA, self::CNAME, self::MX, self::TXT, self::NS], true);
     }
 
     public function isAdvanced(): bool
@@ -33,16 +33,16 @@ enum RecordType: string
 
     public function requiresPriority(): bool
     {
-        return in_array($this, [self::MX, self::SRV]);
+        return \in_array($this, [self::MX, self::SRV], true);
     }
 
     public function requiresPort(): bool
     {
-        return in_array($this, [self::SRV]);
+        return \in_array($this, [self::SRV], true);
     }
 
     public function requiresWeight(): bool
     {
-        return in_array($this, [self::SRV]);
+        return \in_array($this, [self::SRV], true);
     }
 }

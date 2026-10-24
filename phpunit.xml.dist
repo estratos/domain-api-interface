@@ -9,7 +9,6 @@
          beStrictAboutOutputDuringTests="true"
          failOnRisky="true"
          failOnWarning="true"
-         executeInIsolation="true"
          stopOnFailure="false"
          testdox="true">
     <php>
@@ -23,20 +22,10 @@
         </testsuite>
     </testsuites>
 
-    <coverage>
-        <report>
-            <html outputDirectory="coverage"/>
-            <text outputFile="php://stdout"/>
-        </report>
-        
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
-    
     <source>
         <include>
             <directory suffix=".php">src</directory>
         </include>
     </source>
+
 </phpunit>

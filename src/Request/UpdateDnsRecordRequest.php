@@ -5,9 +5,16 @@ declare(strict_types=1);
 namespace Estratos\DomainApiInterface\Request;
 
 use Estratos\DomainApiInterface\Enum\RecordType;
+use Estratos\DomainApiInterface\Exception\RequestValidationException;
 
+/**
+ * Request to update an existing DNS record.
+ */
 final readonly class UpdateDnsRecordRequest
 {
+    /**
+     * @throws RequestValidationException when the record data is invalid
+     */
     public function __construct(
         public string $domain,
         public string $recordId,
@@ -20,33 +27,31 @@ final readonly class UpdateDnsRecordRequest
         public ?int $weight = null,
     ) {
         if (empty($domain)) {
-            throw new \InvalidArgumentException('Domain cannot be empty');
+            throw new RequestValidationException('Domain cannot be empty');
         }
 
         if (empty($recordId)) {
-            throw new \InvalidArgumentException('Record ID cannot be empty');
+            throw new RequestValidationException('Record ID cannot be empty');
         }
 
         if (empty($host)) {
-            throw new \InvalidArgumentException('Host cannot be empty');
+            throw new RequestValidationException('Host cannot be empty');
         }
 
         if (empty($value)) {
-            throw new \InvalidArgumentException('Value cannot be empty');
+            throw new RequestValidationException('Value cannot be empty');
         }
 
         if ($ttl < 60 || $ttl > 86400) {
-            throw new \InvalidArgumentException('TTL must be between 60 and 86400 seconds');
+            throw new RequestValidationException('TTL must be between 60 and 86400 seconds');
         }
 
-        if ($type->requiresPriority() && $priority === null) {
-            throw new \InvalidArgumentException('Priority is required for ' . $type->value . ' records');
+        if ($type->requiresPriority() && null === $priority) {
+            throw new RequestValidationException('Priority is required for ' . $type->value . ' records');
         }
 
-        if ($type === RecordType::SRV) {
-            if ($port === null || $weight === null) {
-                throw new \InvalidArgumentException('Port and weight are required for SRV records');
-            }
+        if (RecordType::SRV === $type && (null === $port || null === $weight)) {
+            throw new RequestValidationException('Port and weight are required for SRV records');
         }
     }
 }

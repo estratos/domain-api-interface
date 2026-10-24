@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace Estratos\DomainApiInterface\DTO;
 
-use DateTimeImmutable;
-
+/**
+ * Detailed information about a registered domain.
+ */
 final readonly class DomainInfo
 {
+    public const STATUS_ACTIVE = 'active';
+
+    /**
+     * @param string[] $nameServers name servers currently assigned to the domain
+     */
     public function __construct(
         public string $domain,
         public string $status,
-        public DateTimeImmutable $createdAt,
-        public DateTimeImmutable $expiresAt,
-        public DateTimeImmutable $updatedAt,
+        public \DateTimeImmutable $createdAt,
+        public \DateTimeImmutable $expiresAt,
+        public \DateTimeImmutable $updatedAt,
         public bool $isLocked,
         public bool $isPrivacyEnabled,
         public bool $isAutoRenewEnabled,
@@ -27,19 +33,20 @@ final readonly class DomainInfo
 
     public function isActive(): bool
     {
-        return $this->status === 'active';
+        return self::STATUS_ACTIVE === strtolower(trim($this->status));
     }
 
     public function isExpired(): bool
     {
-        return $this->expiresAt < new DateTimeImmutable();
+        return $this->expiresAt < new \DateTimeImmutable();
     }
 
+    /**
+     * Number of days until the domain expires; negative once it has expired.
+     */
     public function daysUntilExpiration(): int
     {
-        $now = new DateTimeImmutable();
-        $interval = $now->diff($this->expiresAt);
-        return (int) $interval->days;
+        return (int) (new \DateTimeImmutable())->diff($this->expiresAt)->format('%r%a');
     }
 
     public function isLocked(): bool
@@ -54,6 +61,6 @@ final readonly class DomainInfo
 
     public function hasCustomNameServers(): bool
     {
-        return !empty($this->nameServers);
+        return [] !== $this->nameServers;
     }
 }

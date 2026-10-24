@@ -6,10 +6,14 @@ namespace Estratos\DomainApiInterface;
 
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
+/**
+ * Registers the bundle in a Symfony application.
+ *
+ * The bundle ships no services or configuration; it only exposes the
+ * contracts, DTOs, request objects and enums of this package.
+ */
 final class DomainApiInterfaceBundle extends AbstractBundle
 {
-    private const EXTENSION_ALIAS = 'domain_api_interface';
-
     public function getPath(): string
     {
         return \dirname(__DIR__);

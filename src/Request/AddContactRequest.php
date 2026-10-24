@@ -4,8 +4,16 @@ declare(strict_types=1);
 
 namespace Estratos\DomainApiInterface\Request;
 
+use Estratos\DomainApiInterface\Exception\RequestValidationException;
+
+/**
+ * Request to add a contact to the registrar account.
+ */
 final readonly class AddContactRequest
 {
+    /**
+     * @throws RequestValidationException when a required field is empty or the email is invalid
+     */
     public function __construct(
         public string $firstName,
         public string $lastName,
@@ -22,39 +30,39 @@ final readonly class AddContactRequest
         public bool $isDefault = false,
     ) {
         if (empty($firstName)) {
-            throw new \InvalidArgumentException('First name cannot be empty');
+            throw new RequestValidationException('First name cannot be empty');
         }
 
         if (empty($lastName)) {
-            throw new \InvalidArgumentException('Last name cannot be empty');
+            throw new RequestValidationException('Last name cannot be empty');
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException('Invalid email format');
+        if (!filter_var($email, \FILTER_VALIDATE_EMAIL)) {
+            throw new RequestValidationException('Invalid email format');
         }
 
         if (empty($phone)) {
-            throw new \InvalidArgumentException('Phone cannot be empty');
+            throw new RequestValidationException('Phone cannot be empty');
         }
 
         if (empty($address1)) {
-            throw new \InvalidArgumentException('Address cannot be empty');
+            throw new RequestValidationException('Address cannot be empty');
         }
 
         if (empty($city)) {
-            throw new \InvalidArgumentException('City cannot be empty');
+            throw new RequestValidationException('City cannot be empty');
         }
 
         if (empty($state)) {
-            throw new \InvalidArgumentException('State cannot be empty');
+            throw new RequestValidationException('State cannot be empty');
         }
 
         if (empty($postalCode)) {
-            throw new \InvalidArgumentException('Postal code cannot be empty');
+            throw new RequestValidationException('Postal code cannot be empty');
         }
 
         if (empty($country)) {
-            throw new \InvalidArgumentException('Country cannot be empty');
+            throw new RequestValidationException('Country cannot be empty');
         }
     }
 }

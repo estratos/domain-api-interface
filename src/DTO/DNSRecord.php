@@ -23,26 +23,26 @@ final readonly class DNSRecord
 
     public function isA(): bool
     {
-        return $this->type === RecordType::A;
+        return RecordType::A === $this->type;
     }
 
     public function isAAAA(): bool
     {
-        return $this->type === RecordType::AAAA;
+        return RecordType::AAAA === $this->type;
     }
 
     public function isCNAME(): bool
     {
-        return $this->type === RecordType::CNAME;
+        return RecordType::CNAME === $this->type;
     }
 
     public function isMX(): bool
     {
-        return $this->type === RecordType::MX;
+        return RecordType::MX === $this->type;
     }
 
     public function hasPriority(): bool
     {
-        return $this->priority !== null && $this->type === RecordType::MX;
+        return null !== $this->priority && RecordType::MX === $this->type;
     }
 }

@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Estratos\DomainApiInterface\DTO;
 
-use DateTimeImmutable;
-
+/**
+ * Brief information about a domain, used by list operations.
+ */
 final readonly class DomainSummary
 {
+    public const STATUS_ACTIVE = 'active';
+
     public function __construct(
         public string $domain,
         public string $status,
-        public DateTimeImmutable $createdAt,
-        public DateTimeImmutable $expiresAt,
+        public \DateTimeImmutable $createdAt,
+        public \DateTimeImmutable $expiresAt,
         public bool $isLocked,
         public bool $isPrivacyEnabled,
     ) {
@@ -20,11 +23,11 @@ final readonly class DomainSummary
 
     public function isActive(): bool
     {
-        return $this->status === 'active';
+        return self::STATUS_ACTIVE === strtolower(trim($this->status));
     }
 
     public function isExpired(): bool
     {
-        return $this->expiresAt < new DateTimeImmutable();
+        return $this->expiresAt < new \DateTimeImmutable();
     }
 }

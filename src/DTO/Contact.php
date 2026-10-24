@@ -32,9 +32,10 @@ final readonly class Contact
     public function getFullAddress(): string
     {
         $address = $this->address1;
-        if ($this->address2 !== null) {
+        if (null !== $this->address2) {
             $address .= ', ' . $this->address2;
         }
+
         return $address . ', ' . $this->city . ', ' . $this->state . ' ' . $this->postalCode . ', ' . $this->country;
     }
 }
